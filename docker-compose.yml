@@ -1,0 +1,19 @@
+version: "3.9"  # optional since v1.27.0
+services:
+  frontend:
+    image: sdu-evac-frontend:v0.1.0
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+  backend:
+    image: sdu-evac-backend:v1.0.0
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - NODE_ENV=value
+      - MONGO_DB_CONNECTION_STRING=value
+      - MONGO_DB_NAME=value
+      - REDIS_URI=value
+      
