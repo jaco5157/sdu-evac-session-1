@@ -5,20 +5,30 @@
 ### Build container images
 
 ```console
-foo@bar:~$ docker build -f Frontend/Dockerfile --no-cache -t sdu-evac-frontend ./Frontend
-foo@bar:~$ docker build -f Backend/Dockerfile --no-cache -t sdu-evac-backend ./Backend
+docker build -f Frontend/Dockerfile --no-cache -t sdu-evac-frontend ./Frontend
+docker build -f Backend/Dockerfile --no-cache -t sdu-evac-backend ./Backend
+```
+
+### Run local registry
+
+```console
+docker run -d -p 5001:5000 --restart=always --name registry registry:2
 ```
 
 ### Tag/push images
 
 ```console
-foo@bar:~$ docker tag sdu-evac-frontend localhost:5001/sdu-evac-frontend:v0.1.0
-foo@bar:~$ docker push localhost:5001/sdu-evac-frontend:v0.1.0
-foo@bar:~$ docker tag sdu-evac-backend localhost:5001/sdu-evac-backend:v1.0.0
-foo@bar:~$ docker push localhost:5001/sdu-evac-backend:v1.0.0
+docker tag sdu-evac-frontend localhost:5001/sdu-evac-frontend:v0.1.0
+docker push localhost:5001/sdu-evac-frontend:v0.1.0
+docker tag sdu-evac-backend localhost:5001/sdu-evac-backend:v1.0.0
+docker push localhost:5001/sdu-evac-backend:v1.0.0
 ```
 
 ### Install mongodb / redis
+
+```console
+helm repo add bitnami https://charts.bitnami.com/bitnami
+```
 
 ```console
 helm install mongodb bitnami/mongodb \
@@ -28,7 +38,7 @@ helm install mongodb bitnami/mongodb \
 ```
 
 ```console
-helm install redis bitnami/redis \                 
+helm install redis bitnami/redis \
     --set architecture=standalone \
     --set auth.enabled=false
 ```
@@ -36,7 +46,7 @@ helm install redis bitnami/redis \
 ### Apply manifests
 
 ```console
-kubectl apply -f ./Session/manifests
+kubectl apply -f ./manifests
 ```
 
 ## Playbook 2
@@ -44,6 +54,6 @@ kubectl apply -f ./Session/manifests
 ### Terraform apply
 
 ```console
-terraform -chdir=Session/terraform init
-terraform -chdir=Session/terraform apply
+terraform -chdir=terraform init
+terraform -chdir=terraform apply
 ```
