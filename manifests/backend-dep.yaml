@@ -15,7 +15,7 @@ spec:
         app: sdu-evac-backend
     spec:
       containers:
-      - image: localhost:5001/sdu-evac-backend:v1.0.0
+      - image: ghcr.io/jaco5157/sdu-evac-session-1/sdu-evac-backend:{IMG_TAG}
         name: sdu-evac-backend
         env:
         - name: PORT

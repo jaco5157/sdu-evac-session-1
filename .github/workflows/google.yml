@@ -1,0 +1,60 @@
+name: Build and Deploy to GKE
+
+on:
+  push:
+    branches: [ "master" ]
+
+env:
+  GKE_CLUSTER: odense-emergency
+  GKE_ZONE: europe-north1-c
+
+jobs:
+  setup-build-publish-deploy:
+    name: Setup, Build, Publish, and Deploy
+    runs-on: ubuntu-latest
+    environment: production
+
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    # Authenticate to Container Registry
+    - name: Log in to the Container registry
+      uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+      with:
+        registry: ${{ env.REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    # Build the Docker images
+    - name: Build and push images
+      run: |-
+        docker buildx build --push --file Frontend/Dockerfile --tag ghcr.io/jaco5157/sdu-evac-session-1/sdu-evac-frontend:GA-${{ github.sha }} ./Frontend
+        docker buildx build --push --file Backend/Dockerfile --tag ghcr.io/jaco5157/sdu-evac-session-1/sdu-evac-backend:GA-${{ github.sha }} ./Backend
+
+    # Setup gcloud CLI
+    - uses: google-github-actions/setup-gcloud@v0.2.0
+      with:
+        service_account_key: ${{ secrets.SERVICE_ACCOUNT_KEY }}
+        project_id: ${{ secrets.GKE_PROJECT }}
+    
+    # Get the GKE credentials so we can deploy to the cluster
+    - uses: google-github-actions/get-gke-credentials@v0.2.1
+      with:
+        cluster_name: ${{ env.GKE_CLUSTER }}
+        location: ${{ env.GKE_ZONE }}
+        credentials: ${{ secrets.SERVICE_ACCOUNT_KEY }}
+
+    # Use new tags
+    - name: Change Frontend deploy file tags
+      run: sed -i "s+{IMG_TAG}+GA-${{ github.sha }}+g" manifests/frontend-dep.yml
+    - name: Change Backend deploy file tags
+      run: sed -i "s+{IMG_TAG}+GA-${{ github.sha }}+g" manifests/backend-dep.yml
+
+    # Deploy the Docker image to the GKE cluster
+    - name: Deploy
+      run: kubectl apply -f ./manifests
