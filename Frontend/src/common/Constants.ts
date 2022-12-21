@@ -1,5 +1,5 @@
 const constansts = {
-    serverBaseURL: 'http://localhost:3000'
+    serverBaseURL: 'http://sdu-evac-backend:80'
 }
 
 export default constansts;
