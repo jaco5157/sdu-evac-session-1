@@ -6,7 +6,7 @@ on:
 
 env:
   GKE_CLUSTER: odense-emergency
-  GKE_ZONE: europe-north1-c
+  GKE_ZONE: europe-north1
 
 jobs:
   setup-build-publish-deploy:
