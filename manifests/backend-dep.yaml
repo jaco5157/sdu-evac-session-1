@@ -5,7 +5,7 @@ metadata:
     app: sdu-evac-backend
   name: sdu-evac-backend
 spec:
-  replicas: 3
+  replicas: 0
   selector:
     matchLabels:
       app: sdu-evac-backend
@@ -15,7 +15,7 @@ spec:
         app: sdu-evac-backend
     spec:
       containers:
-      - image: ghcr.io/jaco5157/sdu-evac-session-1/sdu-evac-backend:{IMG_TAG}
+      - image: ghcr.io/jaco5157/sdu-evac-backend:{IMG_TAG}
         name: sdu-evac-backend
         env:
         - name: PORT
