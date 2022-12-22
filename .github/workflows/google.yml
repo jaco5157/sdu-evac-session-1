@@ -51,10 +51,12 @@ jobs:
         credentials: ${{ secrets.SERVICE_ACCOUNT_KEY }}
 
     # Use new tags
-    - name: Change Frontend deploy file tags
-      run: sed -i "s+{IMG_TAG}+GA-${{ github.sha }}+g" manifests/frontend-dep.yaml
-    - name: Change Backend deploy file tags
-      run: sed -i "s+{IMG_TAG}+GA-${{ github.sha }}+g" manifests/backend-dep.yaml
+    - name: Change deploy files
+      run: |-
+        sed -i "s+{IMG_TAG}+GA-${{ github.sha }}+g" manifests/frontend-dep.yaml
+        sed -i "s+{IMG_TAG}+GA-${{ github.sha }}+g" manifests/backend-dep.yaml
+        sed -n -i "s+{MONGO_URI}+${{ secrets.MONGO_URI }}+g" manifests/backend-dep.yaml
+        sed -n -i "s+{REDIS_URI}+${{ secrets.REDIS_URI }}+g" manifests/backend-dep.yaml
 
     # Deploy the Docker image to the GKE cluster
     - name: Deploy
