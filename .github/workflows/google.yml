@@ -52,9 +52,9 @@ jobs:
 
     # Use new tags
     - name: Change Frontend deploy file tags
-      run: sed -i "s+{IMG_TAG}+GA-${{ github.sha }}+g" manifests/frontend-dep.yml
+      run: sed -i "s+{IMG_TAG}+GA-${{ github.sha }}+g" manifests/frontend-dep.yaml
     - name: Change Backend deploy file tags
-      run: sed -i "s+{IMG_TAG}+GA-${{ github.sha }}+g" manifests/backend-dep.yml
+      run: sed -i "s+{IMG_TAG}+GA-${{ github.sha }}+g" manifests/backend-dep.yaml
 
     # Deploy the Docker image to the GKE cluster
     - name: Deploy
