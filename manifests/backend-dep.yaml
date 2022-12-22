@@ -5,7 +5,7 @@ metadata:
     app: sdu-evac-backend
   name: sdu-evac-backend
 spec:
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
       app: sdu-evac-backend
