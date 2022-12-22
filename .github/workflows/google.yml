@@ -33,8 +33,8 @@ jobs:
     # Build the Docker images
     - name: Build and push images
       run: |-
-        docker buildx build --push --file Frontend/Dockerfile --tag ghcr.io/jaco5157/sdu-evac-session-1/sdu-evac-frontend:GA-${{ github.sha }} ./Frontend
-        docker buildx build --push --file Backend/Dockerfile --tag ghcr.io/jaco5157/sdu-evac-session-1/sdu-evac-backend:GA-${{ github.sha }} ./Backend
+        docker buildx build --push --file Frontend/Dockerfile --tag ghcr.io/jaco5157/sdu-evac-frontend:GA-${{ github.sha }} ./Frontend
+        docker buildx build --push --file Backend/Dockerfile --tag ghcr.io/jaco5157/sdu-evac-backend:GA-${{ github.sha }} ./Backend
 
     # Setup gcloud CLI
     - uses: google-github-actions/setup-gcloud@v0.2.0
