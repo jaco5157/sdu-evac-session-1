@@ -5,7 +5,7 @@ metadata:
     app: sdu-evac-backend
   name: sdu-evac-backend
 spec:
-  replicas: 0
+  replicas: 1
   selector:
     matchLabels:
       app: sdu-evac-backend
@@ -21,8 +21,8 @@ spec:
         - name: PORT
           value: "80"
         - name: MONGO_DB_CONNECTION_STRING
-          value: mongodb://mongodb:27017
+          value: mongodb+srv://jaco5157:{MONGO_URI}@odenseemergency.fbly3wm.mongodb.net/?retryWrites=true&w=majority
         - name: MONGO_DB_NAME
-          value: sdu-evac
+          value: odenseemergency
         - name: REDIS_URI
-          value: redis://redis-master
+          value: rediss://default:{REDIS_URI}@replica-redis-3dceb14c-jacobhaax-245d.aivencloud.com:18396
