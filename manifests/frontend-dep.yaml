@@ -15,7 +15,7 @@ spec:
         app: sdu-evac-frontend
     spec:
       containers:
-      - image: ghcr.io/jaco5157/sdu-evac-backend:{IMG_TAG}
+      - image: ghcr.io/jaco5157/sdu-evac-frontend:{IMG_TAG}
         name: sdu-evac-frontend
         ports:
         - containerPort: 80
