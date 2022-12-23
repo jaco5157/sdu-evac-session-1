@@ -33,9 +33,10 @@ jobs:
 
     # Build the Docker images
     - name: Build and push frontend
-      run: |
-        docker buildx build --push --file Frontend/Dockerfile --tag ghcr.io/jaco5157/sdu-evac-frontend:GA-${{ github.sha }} ./Frontend
-        docker buildx build --push --file Backend/Dockerfile --tag ghcr.io/jaco5157/sdu-evac-backend:GA-${{ github.sha }} ./Backend
+      run: docker buildx build --push --file Frontend/Dockerfile --tag ghcr.io/jaco5157/sdu-evac-frontend:GA-${{ github.sha }} ./Frontend
+        
+    - name: Build and push backend
+      run: docker buildx build --push --file Backend/Dockerfile --tag ghcr.io/jaco5157/sdu-evac-backend:GA-${{ github.sha }} ./Backend
 
     # Setup gcloud CLI
     - uses: google-github-actions/setup-gcloud@v0.2.0
@@ -51,12 +52,17 @@ jobs:
         credentials: ${{ secrets.SERVICE_ACCOUNT_KEY }}
 
     # Use new tags
-    - name: Change deploy files
-      run: |
-        sed -i "s+{IMG_TAG}+GA-${{ github.sha }}+g" manifests/frontend-dep.yaml
-        sed -i "s+{IMG_TAG}+GA-${{ github.sha }}+g" manifests/backend-dep.yaml
-        sed -n -i "s+{MONGO_URI}+${{ secrets.MONGO_URI }}+g" manifests/backend-dep.yaml
-        sed -n -i "s+{REDIS_URI}+${{ secrets.REDIS_URI }}+g" manifests/backend-dep.yaml
+    - name: Change frontend tag
+      run: sed -i "s+{IMG_TAG}+GA-${{ github.sha }}+g" manifests/frontend-dep.yaml
+        
+    - name: Change backend tag
+      run: sed -i "s+{IMG_TAG}+GA-${{ github.sha }}+g" manifests/backend-dep.yaml
+        
+    - name: Change backend Mongo URI
+      run: sed -i "s+{MONGO_URI}+${{ secrets.MONGO_URI }}+g" manifests/backend-dep.yaml
+        
+    - name: Change backend Redis URI
+      run: sed -i "s+{REDIS_URI}+${{ secrets.REDIS_URI }}+g" manifests/backend-dep.yaml
 
     # Deploy the Docker image to the GKE cluster
     - name: Deploy
