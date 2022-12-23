@@ -5,7 +5,7 @@ metadata:
     app: sdu-evac-backend
   name: sdu-evac-backend
 spec:
-  replicas: 0
+  replicas: 1
   selector:
     matchLabels:
       app: sdu-evac-backend
@@ -17,6 +17,8 @@ spec:
       containers:
       - image: ghcr.io/jaco5157/sdu-evac-backend:{IMG_TAG}
         name: sdu-evac-backend
+        ports:
+        - containerPort: 80
         env:
         - name: PORT
           value: "80"
