@@ -32,8 +32,8 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
 
     # Build the Docker images
-    - name: Build and push images
-      run: |-
+    - name: Build and push frontend
+      run: |
         docker buildx build --push --file Frontend/Dockerfile --tag ghcr.io/jaco5157/sdu-evac-frontend:GA-${{ github.sha }} ./Frontend
         docker buildx build --push --file Backend/Dockerfile --tag ghcr.io/jaco5157/sdu-evac-backend:GA-${{ github.sha }} ./Backend
 
@@ -52,7 +52,7 @@ jobs:
 
     # Use new tags
     - name: Change deploy files
-      run: |-
+      run: |
         sed -i "s+{IMG_TAG}+GA-${{ github.sha }}+g" manifests/frontend-dep.yaml
         sed -i "s+{IMG_TAG}+GA-${{ github.sha }}+g" manifests/backend-dep.yaml
         sed -n -i "s+{MONGO_URI}+${{ secrets.MONGO_URI }}+g" manifests/backend-dep.yaml
