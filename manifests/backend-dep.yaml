@@ -19,12 +19,3 @@ spec:
         name: sdu-evac-backend
         ports:
         - containerPort: 80
-        env:
-        - name: PORT
-          value: "80"
-        - name: MONGO_DB_CONNECTION_STRING
-          value: mongodb+srv://jaco5157:{MONGO_URI}@odenseemergency.fbly3wm.mongodb.net/?retryWrites=true&w=majority
-        - name: MONGO_DB_NAME
-          value: odenseemergency
-        - name: REDIS_URI
-          value: rediss://default:{REDIS_URI}@replica-redis-3dceb14c-jacobhaax-245d.aivencloud.com:18396
