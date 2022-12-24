@@ -1,5 +1,7 @@
 # sdu-evac
 
+Watch the video here: https://youtu.be/frBWr6k9xoI
+
 ## Playbook 1
 
 ### Build container images
